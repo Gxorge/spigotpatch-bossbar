@@ -1,0 +1,36 @@
+From aedafd5c7f3ad49940ed08d80b085f502c949cdc Mon Sep 17 00:00:00 2001
+From: IsGabriellaCurious <gabriellakaitlyn@outlook.com>
+Date: Sat, 3 Sep 2022 13:54:37 +0100
+Subject: [PATCH] Basecomponent Boss Bar
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java b/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
+index 398708735..dd60bf510 100644
+--- a/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
++++ b/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
+@@ -7,6 +7,9 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.function.Consumer;
+ import java.util.function.Supplier;
++
++import net.md_5.bungee.api.chat.BaseComponent;
++import net.md_5.bungee.chat.ComponentSerializer;
+ import net.minecraft.network.protocol.game.PacketPlayOutBoss;
+ import net.minecraft.server.level.BossBattleServer;
+ import net.minecraft.server.level.EntityPlayer;
+@@ -106,6 +109,12 @@ public class CraftBossBar implements BossBar {
+         handle.broadcast(PacketPlayOutBoss::createUpdateNamePacket);
+     }
+ 
++    @Override
++    public void setTitle(BaseComponent... title) {
++        handle.name = CraftChatMessage.fromJSON(ComponentSerializer.toString(title));
++        handle.broadcast(PacketPlayOutBoss::createUpdateNamePacket);
++    }
++
+     @Override
+     public BarColor getColor() {
+         return convertColor(handle.color);
+-- 
+2.36.1.windows.1
+
