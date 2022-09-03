@@ -1,0 +1,36 @@
+From c41a82d49343228b6025c97a54ddc34891150471 Mon Sep 17 00:00:00 2001
+From: IsGabriellaCurious <gabriellakaitlyn@outlook.com>
+Date: Sat, 3 Sep 2022 13:53:49 +0100
+Subject: [PATCH] Basecomponent Boss Bar
+
+
+diff --git a/src/main/java/org/bukkit/boss/BossBar.java b/src/main/java/org/bukkit/boss/BossBar.java
+index 70274f2e..36edd90c 100644
+--- a/src/main/java/org/bukkit/boss/BossBar.java
++++ b/src/main/java/org/bukkit/boss/BossBar.java
+@@ -1,6 +1,8 @@
+ package org.bukkit.boss;
+ 
+ import java.util.List;
++
++import net.md_5.bungee.api.chat.BaseComponent;
+ import org.bukkit.entity.Player;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -22,6 +24,13 @@ public interface BossBar {
+      */
+     void setTitle(@Nullable String title);
+ 
++    /**
++     * Sets the title of this boss bar using a base component
++     *
++     * @param title the title of the bar
++     */
++    void setTitle(@Nullable BaseComponent... title);
++
+     /**
+      * Returns the color of this boss bar
+      *
+-- 
+2.36.1.windows.1
+
