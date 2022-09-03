@@ -1,11 +1,27 @@
-From aedafd5c7f3ad49940ed08d80b085f502c949cdc Mon Sep 17 00:00:00 2001
+From eff75eeb553feaa9407e8db8be41b1456b97c705 Mon Sep 17 00:00:00 2001
 From: IsGabriellaCurious <gabriellakaitlyn@outlook.com>
-Date: Sat, 3 Sep 2022 13:54:37 +0100
+Date: Sat, 3 Sep 2022 16:00:55 +0100
 Subject: [PATCH] Basecomponent Boss Bar
 
 
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 8a8424c0a..619658d8a 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2091,6 +2091,11 @@ public final class CraftServer implements Server {
+         return new CraftBossBar(title, color, style, flags);
+     }
+ 
++    @Override
++    public BossBar createBossBar(BaseComponent[] title, BarColor color, BarStyle style, BarFlag... flags) {
++        return new CraftBossBar(title, color, style, flags);
++    }
++
+     @Override
+     public KeyedBossBar createBossBar(NamespacedKey key, String title, BarColor barColor, BarStyle barStyle, BarFlag... barFlags) {
+         Preconditions.checkArgument(key != null, "key");
 diff --git a/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java b/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
-index 398708735..dd60bf510 100644
+index 398708735..a6e9b3509 100644
 --- a/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
 +++ b/src/main/java/org/bukkit/craftbukkit/boss/CraftBossBar.java
 @@ -7,6 +7,9 @@ import java.util.List;
@@ -18,7 +34,32 @@ index 398708735..dd60bf510 100644
  import net.minecraft.network.protocol.game.PacketPlayOutBoss;
  import net.minecraft.server.level.BossBattleServer;
  import net.minecraft.server.level.EntityPlayer;
-@@ -106,6 +109,12 @@ public class CraftBossBar implements BossBar {
+@@ -41,6 +44,24 @@ public class CraftBossBar implements BossBar {
+         this.setStyle(style);
+     }
+ 
++    public CraftBossBar(BaseComponent[] title, BarColor color, BarStyle style, BarFlag... flags) {
++        handle = new BossBattleServer(
++                CraftChatMessage.fromJSON(ComponentSerializer.toString(title)),
++                convertColor(color),
++                convertStyle(style)
++        );
++
++        this.initialize();
++
++        for (BarFlag flag : flags) {
++            this.addFlag(flag);
++        }
++
++        this.setColor(color);
++        this.setStyle(style);
++
++    }
++
+     public CraftBossBar(BossBattleServer bossBattleServer) {
+         this.handle = bossBattleServer;
+         this.initialize();
+@@ -106,6 +127,12 @@ public class CraftBossBar implements BossBar {
          handle.broadcast(PacketPlayOutBoss::createUpdateNamePacket);
      }
  
